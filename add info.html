@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>নতুন সনদ যোগ করুন</title>
+<link rel="stylesheet" href="verify.css">
+</head>
+<body>
+<header>
+    <div class="container header-container">
+        <div class="logo">Saktaup</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">হোম</a></li>
+                <li><a href="successor_cc_verify.html">ওয়ারিশ যাচাই</a></li>
+                <li><a href="#">যোগাযোগ</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+<section class="verify-section">
+    <div class="container">
+        <div class="verify-card">
+            <h1>নতুন সনদ নম্বর যোগ করুন</h1>
+            <p>দয়া করে নতুন সনদ নম্বর লিখুন।</p>
+
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="newDocument">সনদ নম্বর</label>
+                    <input type="text" id="newDocument" placeholder="সনদ নম্বর লিখুন" required>
+                </div>
+                <button type="submit">নতুন সনদ যোগ করুন</button>
+            </form>
+
+            <div id="message"></div>
+        </div>
+    </div>
+</section>
+</main>
+
+<footer>
+    <div class="container footer-container">
+        <p>&copy; 2025 Saktaup. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+// ডেমো ডাটাবেস ডিফল্ট
+const defaultData = [
+    { "document": "12345" },
+    { "document": "67890" },
+    { "document": "54321" }
+];
+
+// LocalStorage থেকে ডাটা লোড
+function loadData() {
+    let localData = localStorage.getItem('successors');
+    if(localData) {
+        return JSON.parse(localData);
+    } else {
+        localStorage.setItem('successors', JSON.stringify(defaultData));
+        return defaultData;
+    }
+}
+
+// নতুন সনদ যোগ করা
+const addForm = document.getElementById('addForm');
+const messageDiv = document.getElementById('message');
+
+addForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const newDoc = document.getElementById('newDocument').value.trim();
+    if(newDoc === "") return alert("সনদ নম্বর লিখুন");
+
+    let data = loadData();
+    if(data.find(item => item.document === newDoc)) {
+        messageDiv.innerHTML = <p class="error">এই সনদ নম্বর ইতিমধ্যেই আছে।</p>;
+        return;
+    }
+
+    data.push({document: newDoc});
+    localStorage.setItem('successors', JSON.stringify(data));
+    messageDiv.innerHTML = <p class="success">সনদ নম্বর "${newDoc}" সফলভাবে যোগ হয়েছে।</p>;
+    addForm.reset();
+});
+</script>
+</body>
+</html>
