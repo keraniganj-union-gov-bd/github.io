@@ -1,44 +1,79 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ওয়ারিশ অনুসন্ধান</title>
+    <title>Saktaup Clone</title>
     <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Header / Navbar -->
     <header>
-        <div class="logo">ওয়ারিশ অনুসন্ধান</div>
-        <nav>
-            <a href="index.html">হোম</a>
-            <a href="about.html">আমাদের সম্পর্কে</a>
-            <a href="contact.html">যোগাযোগ</a>
-        </nav>
+        <div class="container">
+            <div class="logo">Saktaup</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+        </div>
     </header>
 
-    <main>
-        <div class="container">
-            <h2>তথ্য অনুসন্ধান করুন</h2>
-            <form id="searchForm">
-                <input type="text" id="searchInput" placeholder="আপনার তথ্য লিখুন" required>
-                <button type="submit">অনুসন্ধান</button>
-            </form>
-
-            <table id="resultTable" style="display:none;">
-                <thead>
-                    <tr>
-                        <th>নাম</th>
-                        <th>পিতা/স্বামী</th>
-                        <th>ঠিকানা</th>
-                        <th>অবস্থা</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+    <!-- Hero / Banner -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to Saktaup</h1>
+            <p>Your one-stop digital products store</p>
+            <a href="#" class="btn">Shop Now</a>
         </div>
-    </main>
+    </section>
 
-    <footer>© 2025 আপনার নাম</footer>
+    <!-- Products Section -->
+    <section class="products">
+        <div class="container">
+            <h2>Our Products</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="images/product1.jpg" alt="Product 1">
+                    <h3>Product 1</h3>
+                    <p>Best digital product</p>
+                    <a href="#" class="btn">Buy Now</a>
+                </div>
+                <div class="product-card">
+                    <img src="images/product2.jpg" alt="Product 2">
+                    <h3>Product 2</h3>
+                    <p>Best digital product</p>
+                    <a href="#" class="btn">Buy Now</a>
+                </div>
+                <div class="product-card">
+                    <img src="images/product3.jpg" alt="Product 3">
+                    <h3>Product 3</h3>
+                    <p>Best digital product</p>
+                    <a href="#" class="btn">Buy Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Saktaup. All Rights Reserved.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS -->
     <script src="script.js"></script>
 </body>
 </html>
