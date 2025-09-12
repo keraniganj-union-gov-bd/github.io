@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ওয়ারিশ অনুসন্ধান</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">ওয়ারিশ অনুসন্ধান</div>
+        <nav>
+            <a href="index.html">হোম</a>
+            <a href="about.html">আমাদের সম্পর্কে</a>
+            <a href="contact.html">যোগাযোগ</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>তথ্য অনুসন্ধান করুন</h2>
+            <form id="searchForm">
+                <input type="text" id="searchInput" placeholder="আপনার তথ্য লিখুন" required>
+                <button type="submit">অনুসন্ধান</button>
+            </form>
+
+            <table id="resultTable" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>নাম</th>
+                        <th>পিতা/স্বামী</th>
+                        <th>ঠিকানা</th>
+                        <th>অবস্থা</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>© 2025 আপনার নাম</footer>
+    <script src="script.js"></script>
+</body>
+</html>
