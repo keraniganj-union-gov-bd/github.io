@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ওয়ারিশ সনদ যাচাই</title>
-<link rel="stylesheet" href="successor.css">
+<link rel="stylesheet" href="verify.css">
 </head>
 <body>
 <header>
@@ -13,7 +13,7 @@
         <nav>
             <ul>
                 <li><a href="index.html">হোম</a></li>
-                <li><a href="add_successor.html">নতুন সনদ যোগ করুন</a></li>
+                <li><a href="add_document.html">সনদ ইনপুট</a></li>
             </ul>
         </nav>
     </div>
@@ -24,12 +24,12 @@
     <div class="container">
         <div class="verify-card">
             <h1>ওয়ারিশ সনদ যাচাই</h1>
-            <p>১৭ সংখ্যার Serial Number লিখে যাচাই করুন।</p>
+            <p>১৭-সংখ্যার সনদ নম্বর লিখে যাচাই করুন।</p>
 
             <form id="verifyForm">
                 <div class="form-group">
-                    <label>Serial Number</label>
-                    <input type="text" id="serial" placeholder="Serial Number লিখুন" required>
+                    <label for="document">সনদ নম্বর</label>
+                    <input type="text" id="document" placeholder="সনদ নম্বর লিখুন" required>
                 </div>
                 <button type="submit">যাচাই করুন</button>
             </form>
@@ -47,35 +47,42 @@
 </footer>
 
 <script>
+// ডাটাবেস লোড
 function loadData() {
-    let data = localStorage.getItem('successors');
-    return data ? JSON.parse(data) : [];
+    let localData = localStorage.getItem('successors');
+    if(localData) return JSON.parse(localData);
+    else return [];
 }
 
-const form = document.getElementById('verifyForm');
+// যাচাই
+const verifyForm = document.getElementById('verifyForm');
 const resultDiv = document.getElementById('result');
 
-form.addEventListener('submit', function(e){
+verifyForm.addEventListener('submit', function(e){
     e.preventDefault();
-    const serialInput = document.getElementById('serial').value.trim();
-    if(serialInput === "") return resultDiv.innerHTML = <p class="error">Serial Number দিন।</p>;
+    const docInput = document.getElementById('document').value.trim();
+
+    if(!docInput){
+        resultDiv.innerHTML = <p class="error">সনদ নম্বর লিখুন।</p>;
+        return;
+    }
 
     const data = loadData();
-    const found = data.find(item => item.serial === serialInput);
+    const found = data.find(item => item.document === docInput);
 
-    if(found) {
-        let info = <p class="success">সনদ যাচাই সফল!</p>;
-        info += <ul>;
-        info += <li>নাম: ${found.name}</li>;
-        info += <li>সম্পর্ক: ${found.relation}</li>;
-        info += <li>বয়স: ${found.age}</li>;
-        for(let i=4; i<=17; i++){
-            info += <li>ফিল্ড ${i}: ${found['field'+i]}</li>;
-        }
-        info += </ul>;
-        resultDiv.innerHTML = info;
+    if(found){
+        resultDiv.innerHTML = `
+            <p class="success">সনদ যাচাই সফল হয়েছে।</p>
+            <ul>
+                <li>ক্রমিক নম্বর: ${found.serial}</li>
+                <li>নাম: ${found.name}</li>
+                <li>সম্পর্ক: ${found.relation}</li>
+                <li>বয়স: ${found.age}</li>
+                <li>সনদ নম্বর: ${found.document}</li>
+            </ul>
+        `;
     } else {
-        resultDiv.innerHTML = <p class="error">ত্রুটি: Serial Number মিলিত হয়নি।</p>;
+        resultDiv.innerHTML = <p class="error">ত্রুটি: সনদ নম্বর মিলিত হয়নি।</p>;
     }
 });
 </script>
