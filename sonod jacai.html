@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>ওয়ারিশ সনদ যাচাই</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    label { display: block; margin-top: 10px; }
+    input { padding: 5px; width: 250px; }
+    button { margin-top: 15px; padding: 8px 15px; background: green; color: white; border: none; cursor: pointer; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; max-width: 600px; }
+    table, th, td { border: 1px solid black; }
+    th, td { padding: 10px; text-align: center; }
+    .error { color: red; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h2>ওয়ারিশ সনদ যাচাই</h2>
+  
+  <label>আপনার ১৭ সংখ্যার কোড লিখুন:</label>
+  <input type="text" id="codeInput" maxlength="17" placeholder="উদাহরণ: 48203917462837465">
+  <button onclick="verifySonod()">যাচাই করুন</button>
+
+  <div id="result"></div>
+
+  <script>
+    function verifySonod() {
+      let code = document.getElementById("codeInput").value.trim();
+      let data = localStorage.getItem(code);
+
+      let resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "";
+
+      if (data) {
+        let sonod = JSON.parse(data);
+        resultDiv.innerHTML = `
+          <h3>✅ যাচাইকৃত তথ্য</h3>
+          <table>
+            <tr><th>ক্রমিক নং</th><td>${sonod.serial}</td></tr>
+            <tr><th>নাম</th><td>${sonod.name}</td></tr>
+            <tr><th>সম্পর্ক</th><td>${sonod.relation}</td></tr>
+            <tr><th>বয়স</th><td>${sonod.age}</td></tr>
+            <tr><th>সনদ কোড</th><td>${code}</td></tr>
+          </table>
+        `;
+      } else {
+        resultDiv.innerHTML = <p class="error">❌ এই কোডের কোনো তথ্য পাওয়া যায়নি!</p>;
+      }
+    }
+  </script>
+</body>
+</html>
