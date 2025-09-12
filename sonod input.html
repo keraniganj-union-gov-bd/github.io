@@ -28,7 +28,7 @@
     function generate17DigitCode() {
       let code = "";
       for (let i = 0; i < 17; i++) {
-        code += Math.floor(Math.random() * 10); // 0 থেকে 9 পর্যন্ত সংখ্যা যোগ করে
+        code += Math.floor(Math.random() * 10);
       }
       return code;
     }
@@ -41,19 +41,18 @@
       let relation = document.getElementById("relation").value;
       let age = document.getElementById("age").value;
 
-      // ১৭ সংখ্যার কোড জেনারেট
       let uniqueCode = generate17DigitCode();
 
-      // LocalStorage এ ডাটা সংরক্ষণ
       let sonodData = {
         serial: serial,
         name: name,
         relation: relation,
         age: age
       };
+
       localStorage.setItem(uniqueCode, JSON.stringify(sonodData));
 
-      document.getElementById("generatedCode").innerText = 
+      document.getElementById("generatedCode").innerText =
         "✅ আপনার ১৭ সংখ্যার কোড: " + uniqueCode;
     });
   </script>
