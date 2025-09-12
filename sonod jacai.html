@@ -26,23 +26,41 @@
   <script>
     function verifySonod() {
       let code = document.getElementById("codeInput").value.trim();
-      let data = localStorage.getItem(code);
-
+      let allKeys = Object.keys(localStorage);
       let resultDiv = document.getElementById("result");
       resultDiv.innerHTML = "";
 
-      if (data) {
-        let sonod = JSON.parse(data);
-        resultDiv.innerHTML = `
+      let found = allKeys
+        .map(key => ({ key, data: JSON.parse(localStorage.getItem(key)) }))
+        .filter(item => item.key === code);
+
+      if (found.length > 0) {
+        let tableHTML = `
           <h3>✅ যাচাইকৃত তথ্য</h3>
           <table>
-            <tr><th>ক্রমিক নং</th><td>${sonod.serial}</td></tr>
-            <tr><th>নাম</th><td>${sonod.name}</td></tr>
-            <tr><th>সম্পর্ক</th><td>${sonod.relation}</td></tr>
-            <tr><th>বয়স</th><td>${sonod.age}</td></tr>
-            <tr><th>সনদ কোড</th><td>${code}</td></tr>
-          </table>
+            <tr>
+              <th>ক্রমিক নং</th>
+              <th>নাম</th>
+              <th>সম্পর্ক</th>
+              <th>বয়স</th>
+            </tr>
         `;
+
+        // প্রথম ৫টি রো দেখাবে (যদি ৫টির বেশি থাকে)
+        for (let i = 0; i < Math.min(found.length, 5); i++) {
+          let d = found[i].data;
+          tableHTML += `
+            <tr>
+              <td>${d.serial}</td>
+              <td>${d.name}</td>
+              <td>${d.relation}</td>
+              <td>${d.age}</td>
+            </tr>
+          `;
+        }
+
+        tableHTML += "</table>";
+        resultDiv.innerHTML = tableHTML;
       } else {
         resultDiv.innerHTML = <p class="error">❌ এই কোডের কোনো তথ্য পাওয়া যায়নি!</p>;
       }
