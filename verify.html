@@ -2,8 +2,9 @@
 <html lang="bn">
 <head>
   <meta charset="UTF-8">
-  <title>ওয়ারিশ সনদ যাচাই সিস্টেম</title>
+  <title>Sonod Jacai</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header>
@@ -18,8 +19,14 @@
   </header>
 
   <main>
-    <h1>স্বাগতম!</h1>
-    <p>এই সাইটে আপনি ওয়ারিশ সনদ ইনপুট ও যাচাই করতে পারবেন।</p>
+    <h2>সনদ যাচাই</h2>
+    <form id="verifyForm">
+      <label>১৭ সংখ্যার সনদ নম্বর লিখুন: 
+        <input type="text" id="verifyNumber" maxlength="17" required>
+      </label>
+      <button type="submit">Verify</button>
+    </form>
+    <div id="result"></div>
   </main>
 </body>
 </html>

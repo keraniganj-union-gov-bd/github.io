@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Sonod Input</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h2>ওয়ারিশ সনদ যাচাই</h2>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="input.html">Sonod Input</a>
+      <a href="verify.html">Sonod Jacai</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>তথ্য ইনপুট করুন</h2>
+    <form id="sonodForm">
+      <label>ক্রমিক নম্বর: <input type="text" id="serial" required></label><br>
+      <label>নাম: <input type="text" id="name" required></label><br>
+      <label>সম্পর্ক: <input type="text" id="relation" required></label><br>
+      <label>বয়স: <input type="number" id="age" required></label><br>
+      <button type="submit">Save</button>
+    </form>
+    <p id="successMsg"></p>
+  </main>
+</body>
+</html>
