@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ওয়ারিশ সনদ পত্র যাচাই</title>
+<title>ওয়ারিশ সনদ যাচাই</title>
 <link rel="stylesheet" href="verify.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 <header>
@@ -14,7 +13,7 @@
         <nav>
             <ul>
                 <li><a href="index.html">হোম</a></li>
-                <li><a href="#">ওয়ারিশ যাচাই</a></li>
+                <li><a href="add_document.html">নতুন সনদ যোগ করুন</a></li>
                 <li><a href="#">যোগাযোগ</a></li>
             </ul>
         </nav>
@@ -25,29 +24,17 @@
 <section class="verify-section">
     <div class="container">
         <div class="verify-card">
-            <h1>ওয়ারিশ সনদ পত্র যাচাই</h1>
-            <p>নিচে নতুন সনদ নম্বর যোগ করুন বা যাচাই করুন।</p>
-            
-            <!-- নতুন সনদ ইনপুট -->
-            <form id="addForm">
-                <div class="form-group">
-                    <label for="newDocument">নতুন সনদ নম্বর</label>
-                    <input type="text" id="newDocument" placeholder="নতুন সনদ নম্বর লিখুন" required>
-                </div>
-                <button type="submit">নতুন সনদ যোগ করুন</button>
-            </form>
+            <h1>ওয়ারিশ সনদ যাচাই</h1>
+            <p>সনদ নম্বর লিখে যাচাই করুন।</p>
 
-            <hr style="margin:20px 0;">
-
-            <!-- যাচাই ফর্ম -->
             <form id="verifyForm">
                 <div class="form-group">
-                    <label for="document">সনদ নম্বর যাচাই</label>
+                    <label for="document">সনদ নম্বর</label>
                     <input type="text" id="document" placeholder="সনদ নম্বর লিখুন" required>
                 </div>
                 <button type="submit">যাচাই করুন</button>
             </form>
-            
+
             <div id="result"></div>
         </div>
     </div>
@@ -61,43 +48,21 @@
 </footer>
 
 <script>
-// ডেমো ডাটাবেস JSON
-const defaultData = [
-    { "document": "12345" },
-    { "document": "67890" },
-    { "document": "54321" }
-];
-
-// LocalStorage থেকে ডাটা লোড
+// ডাটাবেস লোড
 function loadData() {
     let localData = localStorage.getItem('successors');
     if(localData) {
         return JSON.parse(localData);
     } else {
+        const defaultData = [
+            { "document": "12345" },
+            { "document": "67890" },
+            { "document": "54321" }
+        ];
         localStorage.setItem('successors', JSON.stringify(defaultData));
         return defaultData;
     }
 }
-
-// নতুন সনদ যোগ করা
-const addForm = document.getElementById('addForm');
-addForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    const newDoc = document.getElementById('newDocument').value.trim();
-    if(newDoc === "") return alert("সনদ নম্বর লিখুন");
-
-    let data = loadData();
-    // Duplicate চেক
-    if(data.find(item => item.document === newDoc)) {
-        alert("এই সনদ নম্বর ইতিমধ্যেই আছে");
-        return;
-    }
-
-    data.push({document: newDoc});
-    localStorage.setItem('successors', JSON.stringify(data));
-    alert("সনদ নম্বর সফলভাবে যোগ হয়েছে");
-    addForm.reset();
-});
 
 // যাচাই ফর্ম
 const verifyForm = document.getElementById('verifyForm');
@@ -108,7 +73,7 @@ verifyForm.addEventListener('submit', function(e){
     const docInput = document.getElementById('document').value.trim();
     if(docInput === "") return resultDiv.innerHTML = <p class="error">সনদ নম্বর দিন।</p>;
 
-    let data = loadData();
+    const data = loadData();
     const found = data.find(item => item.document === docInput);
 
     if(found) {
