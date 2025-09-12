@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ওয়ারিশ সনদ পত্র যাচাই</title>
+    <link rel="stylesheet" href="verify.css">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="logo">Saktaup</div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">হোম</a></li>
+                    <li><a href="#">ওয়ারিশ যাচাই</a></li>
+                    <li><a href="#">যোগাযোগ</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="verify-section">
+            <div class="container">
+                <h1>ওয়ারিশ সনদ পত্র যাচাই</h1>
+                <p>দয়া করে নীচের তথ্যটি প্রদান করুন এবং যাচাই করুন।</p>
+                
+                <form id="verifyForm">
+                    <label for="name">নাম</label>
+                    <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required>
+
+                    <label for="document">সনদ নম্বর</label>
+                    <input type="text" id="document" name="document" placeholder="সনদ নম্বর লিখুন" required>
+
+                    <button type="submit">যাচাই করুন</button>
+                </form>
+
+                <div id="result"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Saktaup. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script>
+        const form = document.getElementById('verifyForm');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const documentNum = document.getElementById('document').value;
+
+            // Demo Verification (যেহেতু server-side নেই)
+            if(name && documentNum) {
+                resultDiv.innerHTML = <p style="color:green; font-weight:bold;">সফল: "${name}" নামের সনদ যাচাই সম্পন্ন হয়েছে।</p>;
+            } else {
+                resultDiv.innerHTML = <p style="color:red;">ত্রুটি: সঠিক তথ্য প্রদান করুন।</p>;
+            }
+        });
+    </script>
+</body>
+</html>
