@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ওয়ারিশ সনদ যাচাই</title>
-<link rel="stylesheet" href="verify.css">
+<title>ওয়ারিশ সনদ তথ্য ইনপুট</title>
+<link rel="stylesheet" href="successor.css">
 </head>
 <body>
 <header>
@@ -13,29 +13,81 @@
         <nav>
             <ul>
                 <li><a href="index.html">হোম</a></li>
-                <li><a href="add_document.html">নতুন সনদ যোগ করুন</a></li>
-                <li><a href="#">যোগাযোগ</a></li>
+                <li><a href="verify_successor.html">ওয়ারিশ যাচাই</a></li>
             </ul>
         </nav>
     </div>
 </header>
 
 <main>
-<section class="verify-section">
+<section class="input-section">
     <div class="container">
-        <div class="verify-card">
-            <h1>ওয়ারিশ সনদ যাচাই</h1>
-            <p>সনদ নম্বর লিখে যাচাই করুন।</p>
+        <div class="input-card">
+            <h1>ওয়ারিশ সনদ তথ্য ইনপুট</h1>
+            <p>নিচের তথ্য পূরণ করুন। প্রতিটি এন্ট্রির জন্য ১৭-সংখ্যার Serial Number তৈরি হবে।</p>
 
-            <form id="verifyForm">
+            <form id="successorForm">
                 <div class="form-group">
-                    <label for="document">সনদ নম্বর</label>
-                    <input type="text" id="document" placeholder="সনদ নম্বর লিখুন" required>
+                    <label>নাম</label>
+                    <input type="text" id="name" required>
                 </div>
-                <button type="submit">যাচাই করুন</button>
+                <div class="form-group">
+                    <label>সম্পর্ক</label>
+                    <input type="text" id="relation" required>
+                </div>
+                <div class="form-group">
+                    <label>বয়স</label>
+                    <input type="number" id="age" required>
+                </div>
+                <!-- ১৭ ফিল্ডের জন্য উদাহরণ: আমরা নাম, বয়স, সম্পর্ক + অন্যান্য ১৪ ফিল্ড ক্রমিকভাবে যোগ করতে পারি -->
+                <div class="form-group">
+                    <label>ফিল্ড ৪</label><input type="text" id="field4">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ৫</label><input type="text" id="field5">
+                </div>
+                <!-- একইভাবে field6..field17 -->
+                <div class="form-group">
+                    <label>ফিল্ড ৬</label><input type="text" id="field6">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ৭</label><input type="text" id="field7">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ৮</label><input type="text" id="field8">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ৯</label><input type="text" id="field9">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ১০</label><input type="text" id="field10">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ১১</label><input type="text" id="field11">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ১২</label><input type="text" id="field12">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ১৩</label><input type="text" id="field13">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ১৪</label><input type="text" id="field14">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ১৫</label><input type="text" id="field15">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ১৬</label><input type="text" id="field16">
+                </div>
+                <div class="form-group">
+                    <label>ফিল্ড ১৭</label><input type="text" id="field17">
+                </div>
+
+                <button type="submit">সনদ সংরক্ষণ করুন</button>
             </form>
 
-            <div id="result"></div>
+            <div id="message"></div>
         </div>
     </div>
 </section>
@@ -48,39 +100,57 @@
 </footer>
 
 <script>
-// ডাটাবেস লোড
 function loadData() {
-    let localData = localStorage.getItem('successors');
-    if(localData) {
-        return JSON.parse(localData);
-    } else {
-        const defaultData = [
-            { "document": "12345" },
-            { "document": "67890" },
-            { "document": "54321" }
-        ];
-        localStorage.setItem('successors', JSON.stringify(defaultData));
-        return defaultData;
-    }
+    let data = localStorage.getItem('successors');
+    return data ? JSON.parse(data) : [];
 }
 
-// যাচাই ফর্ম
-const verifyForm = document.getElementById('verifyForm');
-const resultDiv = document.getElementById('result');
+function saveData(data) {
+    localStorage.setItem('successors', JSON.stringify(data));
+}
 
-verifyForm.addEventListener('submit', function(e){
+// ১৭ সংখ্যার ইউনিক নম্বর জেনারেট
+function generateSerial() {
+    let serial = '';
+    for(let i=0; i<17; i++){
+        serial += Math.floor(Math.random()*10); // 0-9
+    }
+    return serial;
+}
+
+const form = document.getElementById('successorForm');
+const messageDiv = document.getElementById('message');
+
+form.addEventListener('submit', function(e){
     e.preventDefault();
-    const docInput = document.getElementById('document').value.trim();
-    if(docInput === "") return resultDiv.innerHTML = <p class="error">সনদ নম্বর দিন।</p>;
 
     const data = loadData();
-    const found = data.find(item => item.document === docInput);
 
-    if(found) {
-        resultDiv.innerHTML = <p class="success">সফল: সনদ নম্বর "${docInput}" যাচাই সম্পন্ন হয়েছে।</p>;
-    } else {
-        resultDiv.innerHTML = <p class="error">ত্রুটি: সনদ নম্বর মিলিত হয়নি।</p>;
-    }
+    const entry = {
+        serial: generateSerial(),
+        name: document.getElementById('name').value,
+        relation: document.getElementById('relation').value,
+        age: document.getElementById('age').value,
+        field4: document.getElementById('field4').value,
+        field5: document.getElementById('field5').value,
+        field6: document.getElementById('field6').value,
+        field7: document.getElementById('field7').value,
+        field8: document.getElementById('field8').value,
+        field9: document.getElementById('field9').value,
+        field10: document.getElementById('field10').value,
+        field11: document.getElementById('field11').value,
+        field12: document.getElementById('field12').value,
+        field13: document.getElementById('field13').value,
+        field14: document.getElementById('field14').value,
+        field15: document.getElementById('field15').value,
+        field16: document.getElementById('field16').value,
+        field17: document.getElementById('field17').value
+    };
+
+    data.push(entry);
+    saveData(data);
+    messageDiv.innerHTML = <p class="success">সনদ সংরক্ষণ সফল! Serial Number: ${entry.serial}</p>;
+    form.reset();
 });
 </script>
 </body>
