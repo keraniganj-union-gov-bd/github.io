@@ -26,12 +26,24 @@
     <div class="container">
         <div class="verify-card">
             <h1>ওয়ারিশ সনদ পত্র যাচাই</h1>
-            <p>দয়া করে সনদ নম্বর লিখুন এবং যাচাই করুন।</p>
+            <p>নিচে নতুন সনদ নম্বর যোগ করুন বা যাচাই করুন।</p>
             
+            <!-- নতুন সনদ ইনপুট -->
+            <form id="addForm">
+                <div class="form-group">
+                    <label for="newDocument">নতুন সনদ নম্বর</label>
+                    <input type="text" id="newDocument" placeholder="নতুন সনদ নম্বর লিখুন" required>
+                </div>
+                <button type="submit">নতুন সনদ যোগ করুন</button>
+            </form>
+
+            <hr style="margin:20px 0;">
+
+            <!-- যাচাই ফর্ম -->
             <form id="verifyForm">
                 <div class="form-group">
-                    <label for="document">সনদ নম্বর</label>
-                    <input type="text" id="document" name="document" placeholder="সনদ নম্বর লিখুন" required>
+                    <label for="document">সনদ নম্বর যাচাই</label>
+                    <input type="text" id="document" placeholder="সনদ নম্বর লিখুন" required>
                 </div>
                 <button type="submit">যাচাই করুন</button>
             </form>
@@ -49,32 +61,60 @@
 </footer>
 
 <script>
-const form = document.getElementById('verifyForm');
-const resultDiv = document.getElementById('result');
+// ডেমো ডাটাবেস JSON
+const defaultData = [
+    { "document": "12345" },
+    { "document": "67890" },
+    { "document": "54321" }
+];
 
-form.addEventListener('submit', async function(e) {
+// LocalStorage থেকে ডাটা লোড
+function loadData() {
+    let localData = localStorage.getItem('successors');
+    if(localData) {
+        return JSON.parse(localData);
+    } else {
+        localStorage.setItem('successors', JSON.stringify(defaultData));
+        return defaultData;
+    }
+}
+
+// নতুন সনদ যোগ করা
+const addForm = document.getElementById('addForm');
+addForm.addEventListener('submit', function(e){
     e.preventDefault();
-    const documentInput = document.getElementById('document').value.trim();
+    const newDoc = document.getElementById('newDocument').value.trim();
+    if(newDoc === "") return alert("সনদ নম্বর লিখুন");
 
-    if(documentInput === "") {
-        resultDiv.innerHTML = <p class="error">ত্রুটি: সনদ নম্বর প্রদান করুন।</p>;
+    let data = loadData();
+    // Duplicate চেক
+    if(data.find(item => item.document === newDoc)) {
+        alert("এই সনদ নম্বর ইতিমধ্যেই আছে");
         return;
     }
 
-    try {
-        const response = await fetch('successors.json');
-        const data = await response.json();
+    data.push({document: newDoc});
+    localStorage.setItem('successors', JSON.stringify(data));
+    alert("সনদ নম্বর সফলভাবে যোগ হয়েছে");
+    addForm.reset();
+});
 
-        const found = data.find(item => item.document === documentInput);
+// যাচাই ফর্ম
+const verifyForm = document.getElementById('verifyForm');
+const resultDiv = document.getElementById('result');
 
-        if(found) {
-            resultDiv.innerHTML = <p class="success">সফল: সনদ নম্বর "${documentInput}" যাচাই সম্পন্ন হয়েছে।</p>;
-        } else {
-            resultDiv.innerHTML = <p class="error">ত্রুটি: সনদ নম্বর মিলিত হয়নি।</p>;
-        }
-    } catch(err) {
-        resultDiv.innerHTML = <p class="error">ত্রুটি: ডাটাবেস লোড করা যায়নি।</p>;
-        console.error(err);
+verifyForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const docInput = document.getElementById('document').value.trim();
+    if(docInput === "") return resultDiv.innerHTML = <p class="error">সনদ নম্বর দিন।</p>;
+
+    let data = loadData();
+    const found = data.find(item => item.document === docInput);
+
+    if(found) {
+        resultDiv.innerHTML = <p class="success">সফল: সনদ নম্বর "${docInput}" যাচাই সম্পন্ন হয়েছে।</p>;
+    } else {
+        resultDiv.innerHTML = <p class="error">ত্রুটি: সনদ নম্বর মিলিত হয়নি।</p>;
     }
 });
 </script>
