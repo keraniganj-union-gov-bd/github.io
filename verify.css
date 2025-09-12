@@ -1,136 +1,83 @@
-/* General */
-body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #f9f9f9;
-    color: #000;
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ওয়ারিশ সনদ যাচাই</title>
+<link rel="stylesheet" href="successor.css">
+</head>
+<body>
+<header>
+    <div class="container header-container">
+        <div class="logo">Saktaup</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">হোম</a></li>
+                <li><a href="add_successor.html">নতুন সনদ যোগ করুন</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+<section class="verify-section">
+    <div class="container">
+        <div class="verify-card">
+            <h1>ওয়ারিশ সনদ যাচাই</h1>
+            <p>১৭ সংখ্যার Serial Number লিখে যাচাই করুন।</p>
+
+            <form id="verifyForm">
+                <div class="form-group">
+                    <label>Serial Number</label>
+                    <input type="text" id="serial" placeholder="Serial Number লিখুন" required>
+                </div>
+                <button type="submit">যাচাই করুন</button>
+            </form>
+
+            <div id="result"></div>
+        </div>
+    </div>
+</section>
+</main>
+
+<footer>
+    <div class="container footer-container">
+        <p>&copy; 2025 Saktaup. All Rights Reserved.</p>
+    </div>
+</footer>
+
+<script>
+function loadData() {
+    let data = localStorage.getItem('successors');
+    return data ? JSON.parse(data) : [];
 }
 
-.container {
-    width: 90%;
-    max-width: 800px;
-    margin: auto;
-}
+const form = document.getElementById('verifyForm');
+const resultDiv = document.getElementById('result');
 
-/* Header */
-header {
-    background-color: orange;
-    padding: 15px 0;
-}
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const serialInput = document.getElementById('serial').value.trim();
+    if(serialInput === "") return resultDiv.innerHTML = <p class="error">Serial Number দিন।</p>;
 
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+    const data = loadData();
+    const found = data.find(item => item.serial === serialInput);
 
-header .logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #fff;
-}
-
-header nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-    margin: 0;
-    padding: 0;
-}
-
-header nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* Verify Section */
-.verify-section {
-    padding: 50px 0;
-    display: flex;
-    justify-content: center;
-}
-
-.verify-card {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 500px;
-    text-align: center;
-}
-
-.verify-card h1 {
-    font-size: 28px;
-    margin-bottom: 10px;
-}
-
-.verify-card p {
-    font-size: 16px;
-    margin-bottom: 30px;
-}
-
-.form-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: blue;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: darkblue;
-}
-
-#result {
-    margin-top: 20px;
-    font-size: 16px;
-}
-
-.success {
-    color: green;
-    font-weight: bold;
-}
-
-.error {
-    color: red;
-    font-weight: bold;
-}
-
-/* Footer */
-footer {
-    background-color: #222;
-    color: #fff;
-    padding: 20px 0;
-    text-align: center;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .header-container {
-        flex-direction: column;
-        gap: 10px;
+    if(found) {
+        let info = <p class="success">সনদ যাচাই সফল!</p>;
+        info += <ul>;
+        info += <li>নাম: ${found.name}</li>;
+        info += <li>সম্পর্ক: ${found.relation}</li>;
+        info += <li>বয়স: ${found.age}</li>;
+        for(let i=4; i<=17; i++){
+            info += <li>ফিল্ড ${i}: ${found['field'+i]}</li>;
+        }
+        info += </ul>;
+        resultDiv.innerHTML = info;
+    } else {
+        resultDiv.innerHTML = <p class="error">ত্রুটি: Serial Number মিলিত হয়নি।</p>;
     }
-}
+});
+</script>
+</body>
+</html>
