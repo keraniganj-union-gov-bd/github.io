@@ -26,13 +26,9 @@
     <div class="container">
         <div class="verify-card">
             <h1>ওয়ারিশ সনদ পত্র যাচাই</h1>
-            <p>নিচে নাম এবং সনদ নম্বর প্রদান করুন এবং যাচাই করুন।</p>
+            <p>দয়া করে সনদ নম্বর লিখুন এবং যাচাই করুন।</p>
             
             <form id="verifyForm">
-                <div class="form-group">
-                    <label for="name">নাম</label>
-                    <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required>
-                </div>
                 <div class="form-group">
                     <label for="document">সনদ নম্বর</label>
                     <input type="text" id="document" name="document" placeholder="সনদ নম্বর লিখুন" required>
@@ -58,11 +54,10 @@ const resultDiv = document.getElementById('result');
 
 form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    const nameInput = document.getElementById('name').value.trim();
     const documentInput = document.getElementById('document').value.trim();
 
-    if(nameInput === "" || documentInput === "") {
-        resultDiv.innerHTML = <p class="error">ত্রুটি: সকল তথ্য প্রদান করুন।</p>;
+    if(documentInput === "") {
+        resultDiv.innerHTML = <p class="error">ত্রুটি: সনদ নম্বর প্রদান করুন।</p>;
         return;
     }
 
@@ -70,12 +65,12 @@ form.addEventListener('submit', async function(e) {
         const response = await fetch('successors.json');
         const data = await response.json();
 
-        const found = data.find(item => item.name === nameInput && item.document === documentInput);
+        const found = data.find(item => item.document === documentInput);
 
         if(found) {
-            resultDiv.innerHTML = <p class="success">সফল: "${nameInput}" নামের সনদ যাচাই সম্পন্ন হয়েছে।</p>;
+            resultDiv.innerHTML = <p class="success">সফল: সনদ নম্বর "${documentInput}" যাচাই সম্পন্ন হয়েছে।</p>;
         } else {
-            resultDiv.innerHTML = <p class="error">ত্রুটি: তথ্য মিলিত হয়নি।</p>;
+            resultDiv.innerHTML = <p class="error">ত্রুটি: সনদ নম্বর মিলিত হয়নি।</p>;
         }
     } catch(err) {
         resultDiv.innerHTML = <p class="error">ত্রুটি: ডাটাবেস লোড করা যায়নি।</p>;
