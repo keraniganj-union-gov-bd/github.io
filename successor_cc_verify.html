@@ -8,67 +8,79 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">Saktaup</div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">হোম</a></li>
-                    <li><a href="#">ওয়ারিশ যাচাই</a></li>
-                    <li><a href="#">যোগাযোগ</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<header>
+    <div class="container header-container">
+        <div class="logo">Saktaup</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">হোম</a></li>
+                <li><a href="#">ওয়ারিশ যাচাই</a></li>
+                <li><a href="#">যোগাযোগ</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
 
-    <!-- Main Section -->
-    <main>
-        <section class="verify-section">
-            <div class="container">
-                <div class="verify-card">
-                    <h1>ওয়ারিশ সনদ পত্র যাচাই</h1>
-                    <p>আপনার তথ্য দিন এবং যাচাই করুন।</p>
-                    <form id="verifyForm">
-                        <div class="form-group">
-                            <label for="name">নাম</label>
-                            <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="document">সনদ নম্বর</label>
-                            <input type="text" id="document" name="document" placeholder="সনদ নম্বর লিখুন" required>
-                        </div>
-                        <button type="submit">যাচাই করুন</button>
-                    </form>
-                    <div id="result"></div>
+<main>
+<section class="verify-section">
+    <div class="container">
+        <div class="verify-card">
+            <h1>ওয়ারিশ সনদ পত্র যাচাই</h1>
+            <p>নিচে নাম এবং সনদ নম্বর প্রদান করুন এবং যাচাই করুন।</p>
+            
+            <form id="verifyForm">
+                <div class="form-group">
+                    <label for="name">নাম</label>
+                    <input type="text" id="name" name="name" placeholder="আপনার নাম লিখুন" required>
                 </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container footer-container">
-            <p>&copy; 2025 Saktaup. All Rights Reserved.</p>
+                <div class="form-group">
+                    <label for="document">সনদ নম্বর</label>
+                    <input type="text" id="document" name="document" placeholder="সনদ নম্বর লিখুন" required>
+                </div>
+                <button type="submit">যাচাই করুন</button>
+            </form>
+            
+            <div id="result"></div>
         </div>
-    </footer>
+    </div>
+</section>
+</main>
+
+<footer>
+    <div class="container footer-container">
+        <p>&copy; 2025 Saktaup. All Rights Reserved.</p>
+    </div>
+</footer>
 
 <script>
 const form = document.getElementById('verifyForm');
 const resultDiv = document.getElementById('result');
 
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', async function(e) {
     e.preventDefault();
-    const name = document.getElementById('name').value.trim();
-    const documentNum = document.getElementById('document').value.trim();
+    const nameInput = document.getElementById('name').value.trim();
+    const documentInput = document.getElementById('document').value.trim();
 
-    if(name === "" || documentNum === "") {
+    if(nameInput === "" || documentInput === "") {
         resultDiv.innerHTML = <p class="error">ত্রুটি: সকল তথ্য প্রদান করুন।</p>;
         return;
     }
 
-    // Demo Verification Logic
-    resultDiv.innerHTML = <p class="success">সফল: "${name}" নামের সনদ যাচাই সম্পন্ন হয়েছে।</p>;
+    try {
+        const response = await fetch('successors.json');
+        const data = await response.json();
+
+        const found = data.find(item => item.name === nameInput && item.document === documentInput);
+
+        if(found) {
+            resultDiv.innerHTML = <p class="success">সফল: "${nameInput}" নামের সনদ যাচাই সম্পন্ন হয়েছে।</p>;
+        } else {
+            resultDiv.innerHTML = <p class="error">ত্রুটি: তথ্য মিলিত হয়নি।</p>;
+        }
+    } catch(err) {
+        resultDiv.innerHTML = <p class="error">ত্রুটি: ডাটাবেস লোড করা যায়নি।</p>;
+        console.error(err);
+    }
 });
 </script>
 </body>
