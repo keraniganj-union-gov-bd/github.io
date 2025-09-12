@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>ওয়ারিশ সনদ ইনপুট</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    label { display: block; margin-top: 10px; }
+    input { padding: 5px; width: 250px; }
+    button { margin-top: 15px; padding: 8px 15px; background: blue; color: white; border: none; cursor: pointer; }
+    .code-box { margin-top: 20px; font-weight: bold; color: green; }
+  </style>
+</head>
+<body>
+  <h2>ওয়ারিশ সনদ তথ্য ইনপুট</h2>
+  
+  <form id="sonodForm">
+    <label>ক্রমিক নম্বর: <input type="text" id="serial" required></label>
+    <label>নাম: <input type="text" id="name" required></label>
+    <label>সম্পর্ক: <input type="text" id="relation" required></label>
+    <label>বয়স: <input type="number" id="age" required></label>
+    <button type="submit">তথ্য সংরক্ষণ</button>
+  </form>
+
+  <div class="code-box" id="generatedCode"></div>
+
+  <script>
+    function generate17DigitCode() {
+      let code = "";
+      for (let i = 0; i < 17; i++) {
+        code += Math.floor(Math.random() * 10); // 0 থেকে 9 পর্যন্ত সংখ্যা যোগ করে
+      }
+      return code;
+    }
+
+    document.getElementById("sonodForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      let serial = document.getElementById("serial").value;
+      let name = document.getElementById("name").value;
+      let relation = document.getElementById("relation").value;
+      let age = document.getElementById("age").value;
+
+      // ১৭ সংখ্যার কোড জেনারেট
+      let uniqueCode = generate17DigitCode();
+
+      // LocalStorage এ ডাটা সংরক্ষণ
+      let sonodData = {
+        serial: serial,
+        name: name,
+        relation: relation,
+        age: age
+      };
+      localStorage.setItem(uniqueCode, JSON.stringify(sonodData));
+
+      document.getElementById("generatedCode").innerText = 
+        "✅ আপনার ১৭ সংখ্যার কোড: " + uniqueCode;
+    });
+  </script>
+</body>
+</html>
