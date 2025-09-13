@@ -1,67 +1,63 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<title>ওয়ারিশ সনদ যাচাই</title>
-<style>
-  body { font-family: Arial, sans-serif; margin: 20px; }
-  input { padding: 5px; width: 250px; }
-  button { padding: 8px 15px; background: blue; color: white; border: none; cursor: pointer; }
-  table { border-collapse: collapse; margin-top: 20px; width: 100%; max-width: 600px; }
-  table, th, td { border: 1px solid black; }
-  th, td { padding: 10px; text-align: center; }
-  th { background-color: #f2f2f2; }
-  .error { color: red; margin-top: 15px; }
-</style>
+  <meta charset="UTF-8">
+  <title>সনদ যাচাই</title>
+  <style>
+    body {
+      font-family: 'Siyam Rupali', Arial, sans-serif;
+      margin: 20px;
+    }
+    h2 {
+      color: darkred;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 6px;
+    }
+    #result {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-<h2>ওয়ারিশ সনদ যাচাই</h2>
 
-<label>১৭ সংখ্যার সনদ নম্বর লিখুন:</label>
-<input type="text" id="codeInput" maxlength="17" placeholder="উদাহরণ: 47151604718080130">
-<button onclick="verifySonod()">Verify</button>
+  <h2>সনদ যাচাই করুন</h2>
 
-<div id="result"></div>
+  <label>সনদ নম্বর দিন:
+    <input type="text" id="certificateInput" placeholder="১৭ সংখ্যার নম্বর দিন">
+  </label>
+  <button onclick="verify()">যাচাই করুন</button>
 
-<script>
-function verifySonod() {
-  let code = document.getElementById("codeInput").value.trim();
-  let data = localStorage.getItem(code);
-  let resultDiv = document.getElementById("result");
-  resultDiv.innerHTML = "";
+  <div id="result"></div>
 
-  if (data) {
-    let sonod = JSON.parse(data);
+  <script>
+    function verify() {
+      const certNo = document.getElementById('certificateInput').value.trim();
+      const data = localStorage.getItem(certNo);
 
-    let tableHTML = `
-      <h3>✅ যাচাইকৃত তথ্য</h3>
-      <table>
-        <tr>
-          <th>ক্রমিক নং</th>
-          <th>নাম</th>
-          <th>সম্পর্ক</th>
-          <th>বয়স</th>
-        </tr>
-    `;
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = '';
 
-    // ৫টি রো পর্যন্ত দেখাবে
-    for (let i = 0; i < 5; i++) {
-      tableHTML += `
-        <tr>
-          <td>${sonod.serial}</td>
-          <td>${sonod.name}</td>
-          <td>${sonod.relation}</td>
-          <td>${sonod.age}</td>
-        </tr>
-      `;
+      if (!data) {
+        resultDiv.innerHTML = `<p style="color:red;">কোনো তথ্য পাওয়া যায়নি!</p>`;
+        return;
+      }
+
+      const parsedData = JSON.parse(data);
+
+      let table = `<h3>সনদ নম্বর: ${certNo}</h3>`;
+      table += `<table><thead><tr><th>ক্রমিক নং</th><th>নাম</th><th>সম্পর্ক</th><th>বয়স</th></tr></thead><tbody>`;
+
+      parsedData.forEach(row => {
+        table += `<tr><td>${row.serial}</td><td>${row.name}</td><td>${row.relation}</td><td>${row.age}</td></tr>`;
+      });
+
+      table += `</tbody></table>`;
+      resultDiv.innerHTML = table;
     }
+  </script>
 
-    tableHTML += "</table>";
-    resultDiv.innerHTML = tableHTML;
-  } else {
-    resultDiv.innerHTML = <p class="error">❌ এই কোডের কোনো তথ্য পাওয়া যায়নি!</p>;
-  }
-}
-</script>
 </body>
 </html>
